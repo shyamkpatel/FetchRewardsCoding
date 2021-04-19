@@ -12,7 +12,9 @@ import kotlinx.coroutines.withContext
 
 class DisplayHiringViewModel : ViewModel() {
 
-    private val hiringRepository by lazy { HiringNetworkRepository() }
+    private val hiringRepository by lazy { HiringNetworkRepository(
+            ServiceLocator.hiringApiService)
+    }
 
     private val _hiringLiveData by lazy { MutableLiveData<List<HiringModel>>() }
     val hiringLiveData: LiveData<List<HiringModel>> by lazy { _hiringLiveData }
@@ -28,7 +30,6 @@ class DisplayHiringViewModel : ViewModel() {
                 _hiringLiveData.value = data.filter {
                 !it.name.isNullOrEmpty()
             }.sortedWith(compareBy<HiringModel> { it.listId }.thenBy { it.name })
-//            Log.d(DisplayHiringViewModel::class.java.name, data.toString())
             }
         }
     }
